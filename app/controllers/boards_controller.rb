@@ -29,14 +29,18 @@ class BoardsController < ApplicationController
   end
 
   def update
-    @board.update(board_params)
-    redirect_to board#(オブジェクトの詳細画面へ繊維)
+    if @board.update(board_params)
+      redirect_to @board#(オブジェクトの詳細画面へ繊維)
+    else
+      redirect_to :back, flash: { 
+        board: @board,
+        error_messages: @board.errors.full_messages
+      }
+    end
   end
 
   def destroy
-
-    @board.delete
-
+    @board.destroy
     redirect_to boards_path, flash: { notice: "「#{@board.title}」の掲示板が削除されました。" }
   end
 
